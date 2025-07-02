@@ -1,15 +1,14 @@
-import database from "infra/database.js";
 import orchestrator from "tests/orchestrator.js";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
-  await database.query("drop schema public cascade; create schema public");
+  await orchestrator.clearDatabase();
 });
 
 describe("POST /api/v1/migrations", () => {
   describe("Anonymous user", () => {
     describe("Running pending migrations", () => {
-      const url = "http://localhost:3000/api/v1/migrations"
+      const url = "http://localhost:3000/api/v1/migrations";
 
       test("For the first time", async () => {
         const response1 = await fetch(url, {
@@ -20,11 +19,8 @@ describe("POST /api/v1/migrations", () => {
         const responseBody = await response1.json();
         expect(Array.isArray(responseBody)).toBe(true);
         expect(responseBody.length).toBeGreaterThan(0);
-
-
       });
       test("For the second time", async () => {
-
         const response2 = await fetch(url, {
           method: "POST",
         });
@@ -34,7 +30,6 @@ describe("POST /api/v1/migrations", () => {
         expect(Array.isArray(response2Body)).toBe(true);
         expect(response2Body.length).toBe(0);
       });
-    })
-  })
-})
-
+    });
+  });
+});
