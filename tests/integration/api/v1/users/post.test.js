@@ -1,5 +1,5 @@
 import orchestrator from "tests/orchestrator.js";
-import { version as uuidVersion } from "uuid"
+import { version as uuidVersion } from "uuid";
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
   await orchestrator.clearDatabase();
@@ -11,7 +11,6 @@ describe("POST /api/v1/users", () => {
     const url = "http://localhost:3000/api/v1/users";
 
     test("With unique and valid data", async () => {
-
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -28,11 +27,11 @@ describe("POST /api/v1/users", () => {
       const responseBody = await response.json();
       expect(responseBody).toEqual({
         id: responseBody.id,
-        username: 'teste',
-        email: 'teste@teste.com',
+        username: "teste",
+        email: "teste@teste.com",
         password: responseBody.password,
         created_at: responseBody.created_at,
-        updated_at: responseBody.updated_at
+        updated_at: responseBody.updated_at,
       });
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
@@ -73,7 +72,7 @@ describe("POST /api/v1/users", () => {
         action: "Utilize outro email para cadastro.",
         status_code: 400,
       });
-    })
+    });
     test("With duplicated 'username'", async () => {
       const response1 = await fetch(url, {
         method: "POST",
@@ -108,6 +107,6 @@ describe("POST /api/v1/users", () => {
         action: "Utilize outro username para cadastro.",
         status_code: 400,
       });
-    })
+    });
   });
 });
